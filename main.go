@@ -24,7 +24,7 @@ func main() {
 		handlers.CompressHandler(handlers.CORS(
 			handlers.AllowedOrigins([]string{"*"}),
 			handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"}),
-			handlers.AllowedHeaders([]string{"Accept", "Content-Type", "Origin", "X-Session-Key"}),
+			handlers.AllowedHeaders([]string{"Accept", "Content-Type", "Origin", "Authorization"}),
 		)(
 			http.StripPrefix(config.Prefix, s.Router()),
 		)))
