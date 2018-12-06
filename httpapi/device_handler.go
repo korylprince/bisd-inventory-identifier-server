@@ -1,6 +1,7 @@
 package httpapi
 
 import (
+	"database/sql"
 	"errors"
 	"fmt"
 	"net/http"
@@ -9,21 +10,18 @@ import (
 	"github.com/korylprince/bisd-inventory-identifier-server/api"
 )
 
-//GET /devices/:id
-func handleReadDevice() returnHandler {
-	return func(w http.ResponseWriter, r *http.Request) *handlerResponse {
-		serial := mux.Vars(r)["serial"]
+func readDevice(r *http.Request, tx *sql.Tx) (int, interface{}) {
+	serial := mux.Vars(r)["id"]
 
-		device, err := api.ReadDeviceBySerialNumber(r.Context(), serial)
+	device, err := api.ReadDeviceBySerialNumber(r.Context(), tx, serial)
 
-		if err != nil {
-			return handleError(http.StatusInternalServerError, fmt.Errorf("Unable to query device: %v", err))
-		}
-
-		if device == nil {
-			return handleError(http.StatusNotFound, errors.New("Could not find device"))
-		}
-
-		return &handlerResponse{Code: http.StatusOK, Body: device}
+	if err != nil {
+		return http.StatusInternalServerError, fmt.Errorf("Unable to query device: %v", err)
 	}
+
+	if device == nil {
+		return http.StatusNotFound, errors.New("Could not find device")
+	}
+
+	return http.StatusOK, device
 }

@@ -17,9 +17,7 @@ type Device struct {
 }
 
 //ReadDeviceBySerialNumber returns the device with the given serial number
-func ReadDeviceBySerialNumber(ctx context.Context, serialNumber string) (*Device, error) {
-	tx := ctx.Value(TransactionKey).(*sql.Tx)
-
+func ReadDeviceBySerialNumber(ctx context.Context, tx *sql.Tx, serialNumber string) (*Device, error) {
 	device := &Device{SerialNumber: serialNumber}
 
 	row := tx.QueryRow("SELECT inventory_number, bag_tag, status, model, user FROM devices WHERE serial_number=?;", serialNumber)
@@ -35,7 +33,7 @@ func ReadDeviceBySerialNumber(ctx context.Context, serialNumber string) (*Device
 	case err == sql.ErrNoRows:
 		return nil, nil
 	case err != nil:
-		return nil, &Error{Description: fmt.Sprintf("Could not query Device(%s)", serialNumber), Err: err}
+		return nil, fmt.Errorf("Could not query Device(%s): %v", serialNumber, err)
 	}
 
 	return device, nil

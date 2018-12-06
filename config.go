@@ -9,12 +9,16 @@ import (
 
 //Config represents options given in the environment
 type Config struct {
+	Secret string //optional secret required for API
+
 	SQLDriver string //required
 	SQLDSN    string //required
 
 	ListenAddr string //addr format used for net.Dial; required
 
 	Prefix string //url prefix to mount api to without trailing slash
+
+	Debug bool //send error descriptions to client
 }
 
 var config = &Config{}

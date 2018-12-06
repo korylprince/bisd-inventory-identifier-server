@@ -16,14 +16,18 @@ func main() {
 	if err != nil {
 		log.Fatalln("Could not open database:", err)
 	}
+	httpapi.Debug = config.Debug
 
-	r := httpapi.NewRouter(os.Stdout, db)
+	s := httpapi.NewServer(db, os.Stdout, config.Secret)
 
-	chain := handlers.CompressHandler(handlers.CORS(
-		handlers.AllowedOrigins([]string{"*"}),
-		handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"}),
-		handlers.AllowedHeaders([]string{"Accept", "Content-Type", "Origin", "X-Session-Key"}),
-	)(http.StripPrefix(config.Prefix, r)))
+	chain := handlers.CombinedLoggingHandler(os.Stdout,
+		handlers.CompressHandler(handlers.CORS(
+			handlers.AllowedOrigins([]string{"*"}),
+			handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"}),
+			handlers.AllowedHeaders([]string{"Accept", "Content-Type", "Origin", "X-Session-Key"}),
+		)(
+			http.StripPrefix(config.Prefix, s.Router()),
+		)))
 
 	log.Println("Listening on:", config.ListenAddr)
 	log.Println(http.ListenAndServe(config.ListenAddr, chain))
