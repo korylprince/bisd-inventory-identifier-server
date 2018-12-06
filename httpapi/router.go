@@ -22,5 +22,5 @@ func NewRouter(w io.Writer, db *sql.DB) http.Handler {
 
 	r.NotFoundHandler = m(notFoundHandler)
 
-	return http.StripPrefix("/api/1.0", r)
+	return http.StripPrefix("/api/2.0", r)
 }
