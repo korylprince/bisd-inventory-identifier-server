@@ -14,7 +14,7 @@ type ErrorResponse struct {
 
 //handleError returns a handlerResponse response for the given code
 func handleError(code int, err error) *handlerResponse {
-	return &handlerResponse{Code: code, Body: &ErrorResponse{Code: code, Error: http.StatusText(code)}}
+	return &handlerResponse{Code: code, Body: &ErrorResponse{Code: code, Error: http.StatusText(code)}, Err: err}
 }
 
 //notFoundHandler returns a 401 handlerResponse
