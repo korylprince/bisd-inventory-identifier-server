@@ -16,8 +16,8 @@ type Device struct {
 	User            string `json:"user"`
 }
 
-//readDeviceBySerialNumber returns the device with the given serial number
-func readDeviceBySerialNumber(ctx context.Context, serialNumber string) (*Device, error) {
+//ReadDeviceBySerialNumber returns the device with the given serial number
+func ReadDeviceBySerialNumber(ctx context.Context, serialNumber string) (*Device, error) {
 	tx := ctx.Value(TransactionKey).(*sql.Tx)
 
 	device := &Device{SerialNumber: serialNumber}
@@ -39,13 +39,4 @@ func readDeviceBySerialNumber(ctx context.Context, serialNumber string) (*Device
 	}
 
 	return device, nil
-}
-
-//ReadDeviceByGoogleID returns the device with the given Google ID
-func ReadDeviceByGoogleID(ctx context.Context, svc *ChromebookService, id string) (*Device, error) {
-	serial, err := svc.Get(id)
-	if err != nil {
-		return nil, err
-	}
-	return readDeviceBySerialNumber(ctx, serial)
 }

@@ -12,8 +12,6 @@ Create a MySQL database with `model.sql`. (This matches [pyInventory](https://gi
 
 # Configuration
 
-    INVENTORY_OUATHJSONPATH="/path/to/file.json"
-    INVENTORY_OUATHIMPERSONATEUSER="user@domain.tld"
     INVENTORY_SQLDRIVER="mysql"
     INVENTORY_SQLDSN="username:password@tcp(server:3306)/database?parseTime=true"
     INVENTORY_LISTENADDR=":8080"

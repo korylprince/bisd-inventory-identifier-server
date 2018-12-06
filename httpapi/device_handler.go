@@ -2,6 +2,7 @@ package httpapi
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -9,15 +10,16 @@ import (
 )
 
 //GET /devices/:id
-func handleReadDevice(chromeSvc *api.ChromebookService) returnHandler {
+func handleReadDevice() returnHandler {
 	return func(w http.ResponseWriter, r *http.Request) *handlerResponse {
-		id := mux.Vars(r)["id"]
+		serial := mux.Vars(r)["serial"]
 
-		device, err := api.ReadDeviceByGoogleID(r.Context(), chromeSvc, id)
+		device, err := api.ReadDeviceBySerialNumber(r.Context(), serial)
 
-		if resp := checkAPIError(err); resp != nil {
-			return resp
+		if err != nil {
+			return handleError(http.StatusInternalServerError, fmt.Errorf("Unable to query device: %v", err))
 		}
+
 		if device == nil {
 			return handleError(http.StatusNotFound, errors.New("Could not find device"))
 		}

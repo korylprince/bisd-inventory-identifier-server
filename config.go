@@ -9,9 +9,6 @@ import (
 
 //Config represents options given in the environment
 type Config struct {
-	OAuthJSONPath        string //required
-	OAuthImpersonateUser string //required
-
 	SQLDriver string //required
 	SQLDSN    string //required
 
@@ -33,9 +30,6 @@ func init() {
 	if err != nil {
 		log.Fatalln("Error reading configuration from environment:", err)
 	}
-
-	checkEmpty(config.OAuthJSONPath, "OAUTHJSONPATH")
-	checkEmpty(config.OAuthImpersonateUser, "OAUTHIMPERSONATEUSER")
 
 	checkEmpty(config.SQLDriver, "SQLDRIVER")
 	checkEmpty(config.SQLDSN, "SQLDSN")
