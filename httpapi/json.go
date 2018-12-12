@@ -25,10 +25,6 @@ func jsonResponse(code int, data interface{}) http.Handler {
 			data = resp
 		}
 
-		if code == http.StatusUnauthorized {
-			w.Header().Set("WWW-Authenticate", `Session realm="api"`)
-		}
-
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(code)
 
