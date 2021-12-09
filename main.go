@@ -8,7 +8,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/handlers"
-	"github.com/korylprince/bisd-inventory-identifier-server/httpapi"
+	"github.com/korylprince/bisd-inventory-identifier-server/v2/httpapi"
 )
 
 func main() {

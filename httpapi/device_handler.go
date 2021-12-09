@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/korylprince/bisd-inventory-identifier-server/api"
+	"github.com/korylprince/bisd-inventory-identifier-server/v2/api"
 )
 
 func readDevice(r *http.Request, tx *sql.Tx) (int, interface{}) {
