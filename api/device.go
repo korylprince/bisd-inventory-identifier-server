@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-//Device represents a device in the inventory database
+// Device represents a device in the inventory database
 type Device struct {
 	InventoryNumber string `json:"inventory_number"`
 	SerialNumber    string `json:"serial_number"`
@@ -16,8 +16,8 @@ type Device struct {
 	User            string `json:"user"`
 }
 
-//ReadDeviceBySerialNumber returns the device with the given serial number
-func ReadDeviceBySerialNumber(ctx context.Context, tx *sql.Tx, serialNumber string) (*Device, error) {
+// ReadDeviceBySerialNumber returns the device with the given serial number
+func ReadDeviceBySerialNumber(_ context.Context, tx *sql.Tx, serialNumber string) (*Device, error) {
 	device := &Device{SerialNumber: serialNumber}
 
 	row := tx.QueryRow("SELECT inventory_number, bag_tag, status, model, user FROM devices WHERE serial_number=?;", serialNumber)
